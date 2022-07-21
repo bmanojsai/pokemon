@@ -1,0 +1,217 @@
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, {useEffect, useState} from 'react'
+import {View, Text, Image, FlatList, ToastAndroid, Dimensions, ScrollView} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import styles from '../../styles';
+import { AppStackParams } from '../../types';
+import {BarChart} from "react-native-chart-kit";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+type TextProps = {
+    ability : string
+}
+
+
+const DetailsText :React.FC<TextProps> = ({ability}) => {
+    const [colors , setColors] = useState<string[]>(["orange","darkslategrey","darkmagenta", "blue","green","purple","cadetblue","crimson", "darkblue"])
+    const [randomIndex, setRandomIndex] = useState<number>(0);
+    
+  
+    //here select one random color from the array
+    useEffect(() => {
+        let randomIndex: number = Math.floor(Math.random() * colors.length);
+        setRandomIndex(randomIndex);
+    }, []);
+
+
+    return (
+        <Text style = {[styles.FillText, {backgroundColor : colors[randomIndex]}]} >{ability}</Text>
+    );
+}
+
+
+
+
+
+
+
+
+
+
+type Props = {
+    navigation : NativeStackNavigationProp<AppStackParams, "Details">
+    route : RouteProp<AppStackParams, "Details">
+}
+
+type Ability = { 
+                ability : { 
+                    name : string , 
+                    url : string 
+                }, 
+                is_hidden : boolean, 
+                slot : number 
+            }
+
+type Moves = { 
+                move : { 
+                    name : string , 
+                    url : string 
+                }, 
+                version_group_details : any[]
+            }
+
+type BasicDetails = {
+        height : number, 
+        weight : number, 
+        experience : number,
+        abilities : string[],
+        moves : string[],
+        stats : number[]
+    }
+
+const DetailsScreen : React.FC<Props> = ({navigation, route}) => {
+    const [aboutData, setAboutData] = useState<any>()
+    const [basicDetails, setbasicDetails] = useState<BasicDetails>(
+        {
+            height : 0, 
+            weight : 0, 
+            experience : 0,
+            abilities : ["loading", "loading"],
+            moves : ["loading", "loading"],
+            stats : [0,0,0,0,0,0]
+        }
+    )
+
+    useEffect(():void => {
+
+        (async function():Promise<void>{
+            await axios.get(`https://pokeapi.co/api/v2/pokemon/${route.params.index}`)
+                    .then((response : any) => setAboutData(response.data))
+                    .catch((error) => console.log(error));
+        })()
+
+
+    }, [] );
+
+    useEffect( () => {
+        if(aboutData){
+            let abilityArray:string[] = aboutData.abilities.map( (obj : Ability) => obj.ability.name ) 
+            let movesArray : string[] = aboutData.moves.map( (obj : Moves) => obj.move.name);
+            let stats: number[] = aboutData.stats.map((obj : {base_stat : number}) => obj.base_stat);
+            
+            setbasicDetails({
+                height : aboutData.height,
+                weight : aboutData.weight,
+                experience : aboutData.base_experience,
+                abilities : abilityArray,
+                moves : movesArray,
+                stats : stats
+            });
+
+        console.log(basicDetails);
+
+        }
+    
+    }, [aboutData] );
+
+
+  return (
+    <View style = {[styles.flexFullScreen,{backgroundColor : route.params.color}]}>
+        <View style = {[styles.DetailsTopView, {backgroundColor : route.params.color}]}>
+            <View style = {[styles.DetailsHeader, {justifyContent : 'space-between'}]}>
+                <View style = {styles.DetailsHeader}>
+                    <Icon name='arrow-back' color = "white" size={35} onPress = {() => navigation.goBack()} />
+                    <View>
+                        <Text style= {{fontSize : 30 , color : "white", marginHorizontal : 10}} >{route.params.name}</Text>
+                    </View>
+                </View>
+            </View>
+            <View style = {styles.DetailsImgView}>
+                <Image 
+                    source={{uri : route.params.imgUrl}}
+                    style = {{height : 250, width : 250, overflow : 'visible'}}
+                />
+            </View>
+        </View >
+        <ScrollView style = {styles.DetailsBottomView}>
+            
+            <View style = {styles.DetailView1}><Text style = {{color : route.params.color, fontSize : 20}}>About</Text></View>
+            
+            <View style = {styles.DetailView2}>
+                <View style = {[styles.DV2mini]}>
+                    <Text style = {styles.FontSize}>{basicDetails?.height}'</Text>
+                    <Text style = {{marginTop : 3}}>Height</Text>
+                </View>
+                <View style = {[styles.DV2mini, { borderRightWidth : 2, borderLeftWidth : 2, borderColor : "grey"} ]} >
+                    <Text style = {styles.FontSize} >{basicDetails?.experience}</Text>
+                    <Text style = {{marginTop : 3}} >Experiecnce</Text>
+                </View>
+                <View style = {[styles.DV2mini]} >
+                    <Text style = {styles.FontSize} >{basicDetails?.weight}kg</Text>
+                    <Text style = {{marginTop : 3}} >weight</Text>
+                </View>
+            </View>
+            
+            <View style = {styles.DetailView3}>
+                <Text style = {{color : route.params.color, fontSize : 17}}>Abilities :</Text>
+                <FlatList 
+                    data={basicDetails?.abilities}
+                    horizontal = {true}
+                    showsHorizontalScrollIndicator = {false}
+                    renderItem = { ({item}) =>  <DetailsText ability={item} /> }
+                />
+            </View>
+            
+            <View style = {styles.DetailView4}>
+                <Text style = {{color : route.params.color, fontSize : 17}}>Moves : </Text>
+                <FlatList 
+                    data={basicDetails?.moves}
+                    horizontal = {true}
+                    showsHorizontalScrollIndicator = {false}
+                    renderItem = { ({item}) =>  <DetailsText ability={item} /> }
+                />
+            </View>
+            
+            <View style = {styles.DetailView5}>
+                <View style = {{flexDirection : 'row', justifyContent :"center", alignItems : "center", marginVertical : 25}}><Text style = {{ fontSize : 17}}>Base Stats</Text></View>
+                <View style = {{ height : "100%", width : "100%", display : "flex", alignItems : "center"}}>
+                    <BarChart
+                        data={{
+                            labels: ["HP", "ATK", "DEF", "SATK", "SDEF", "SPD"],
+                            datasets: [
+                              {
+                                data :  basicDetails?.stats
+                              }
+                            ]
+                          }}
+                        width= {Dimensions.get('window').width - 60}
+                        height={200}
+                        yAxisLabel=""
+                        yAxisSuffix=''
+                        chartConfig={{
+                            backgroundGradientFrom: "white",
+                            backgroundGradientTo: "white",
+                            color: () => route.params.color,
+                            strokeWidth: 3, 
+                            barPercentage: 0.7,
+                            
+                          }}
+                        verticalLabelRotation={0}
+                        withInnerLines = {false}
+                        showValuesOnTopOfBars = {true}
+                        withVerticalLabels = {true}
+                        withHorizontalLabels = {true}
+                        fromZero = {true}
+                    />
+                </View>
+            </View>
+        
+        </ScrollView>
+    </View>
+  )
+}
+
+export default DetailsScreen;
