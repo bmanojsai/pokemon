@@ -9,6 +9,12 @@ import axios, { AxiosResponse } from 'axios';
 import Card from '../../components/Card';
 import styles from '../../styles';
 import Icon  from 'react-native-vector-icons/MaterialIcons';
+import { useSelector, useDispatch } from 'react-redux';
+import { getListOfPokemons } from '../../redux/pokemonSlice';
+import { RootState } from '../../redux/store';
+import { fetchListOfPokemons } from '../../redux/pokemonSlice';
+import SearchBar from '../../components/SearchBar';
+
 
 export type Props = {
     navigation : NativeStackNavigationProp<AppStackParams, "Home">
@@ -17,18 +23,13 @@ export type Props = {
 
 
 const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
-    const [data, setData] = useState<any>();
-
+    const[searchShow, setSearchShow] = useState<boolean>(false);
+    const data = useSelector((state : RootState) => state.pokemon.pokemonList);
+    const dispatch = useDispatch();
 
     //fetch the 20 pokemon details
     useEffect(() => {
-
-        (async function():Promise<void>{
-            await axios.get("https://pokeapi.co/api/v2/pokemon/")
-                            .then( (response : AxiosResponse<any,any>): void => setData(response.data.results) )
-                            .catch( (error : any): void => console.log(error) );
-        })()
-
+        dispatch( fetchListOfPokemons() );
     } , []);
 
     //on logout, remove the loggedUser from asyncStorage.
@@ -44,9 +45,21 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
 
     return (
         <View>
-            <View style = {styles.HomeHeader} >
-               <Text style = {{color : "black", fontSize : 35}}>Pokemon</Text>
-               <Icon name='logout' size={35} color = "black" onPress={LogoutTheUser} />
+            <View style = {styles.HomeHeaderHead} >
+                <View style = {styles.HomeHeader}>
+                    <Text style = {{color : "black", fontSize : 35}}>Pokemon</Text>
+                    <View style = {{display : "flex", flexDirection: "row", justifyContent : "center"}} >
+                        <Icon name='search' size={35} color = "black" onPress={() => setSearchShow(!searchShow)} />
+                        <Icon style= {{marginLeft :15}} name='logout' size={35} color = "black" onPress={LogoutTheUser} />
+                    </View>
+                </View>
+
+                {
+                    searchShow && <SearchBar />  
+                }
+                
+               
+               
             </View>
             
             <FlatList 

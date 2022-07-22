@@ -5,10 +5,13 @@ import {View, Text, Image, FlatList, ToastAndroid, Dimensions, ScrollView} from 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from '../../styles';
 import { AppStackParams } from '../../types';
-import {BarChart} from "react-native-chart-kit";
+import {BarChart, ProgressChart} from "react-native-chart-kit";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPokemonDetails, getPokemonDetails } from '../../redux/pokemonSlice';
+import { RootState } from '../../redux/store';
 
 type TextProps = {
     ability : string
@@ -46,7 +49,7 @@ type Props = {
     route : RouteProp<AppStackParams, "Details">
 }
 
-type Ability = { 
+export type Ability = { 
                 ability : { 
                     name : string , 
                     url : string 
@@ -55,7 +58,7 @@ type Ability = {
                 slot : number 
             }
 
-type Moves = { 
+export type Moves = { 
                 move : { 
                     name : string , 
                     url : string 
@@ -63,60 +66,24 @@ type Moves = {
                 version_group_details : any[]
             }
 
-type BasicDetails = {
+export type BasicDetails = {
         height : number, 
         weight : number, 
         experience : number,
         abilities : string[],
         moves : string[],
-        stats : number[]
+        stats : number[],
+        progressStats : number[]
     }
 
 const DetailsScreen : React.FC<Props> = ({navigation, route}) => {
-    const [aboutData, setAboutData] = useState<any>()
-    const [basicDetails, setbasicDetails] = useState<BasicDetails>(
-        {
-            height : 0, 
-            weight : 0, 
-            experience : 0,
-            abilities : ["loading", "loading"],
-            moves : ["loading", "loading"],
-            stats : [0,0,0,0,0,0]
-        }
-    )
+
+    const basicDetails = useSelector((state:RootState) => state.pokemon.pokemonDetails);
+    const dispatch = useDispatch();
 
     useEffect(():void => {
-
-        (async function():Promise<void>{
-            await axios.get(`https://pokeapi.co/api/v2/pokemon/${route.params.index}`)
-                    .then((response : any) => setAboutData(response.data))
-                    .catch((error) => console.log(error));
-        })()
-
-
+        dispatch(fetchPokemonDetails(route.params.index));
     }, [] );
-
-    useEffect( () => {
-        if(aboutData){
-            let abilityArray:string[] = aboutData.abilities.map( (obj : Ability) => obj.ability.name ) 
-            let movesArray : string[] = aboutData.moves.map( (obj : Moves) => obj.move.name);
-            let stats: number[] = aboutData.stats.map((obj : {base_stat : number}) => obj.base_stat);
-            
-            setbasicDetails({
-                height : aboutData.height,
-                weight : aboutData.weight,
-                experience : aboutData.base_experience,
-                abilities : abilityArray,
-                moves : movesArray,
-                stats : stats
-            });
-
-        console.log(basicDetails);
-
-        }
-    
-    }, [aboutData] );
-
 
   return (
     <View style = {[styles.flexFullScreen,{backgroundColor : route.params.color}]}>
@@ -177,7 +144,7 @@ const DetailsScreen : React.FC<Props> = ({navigation, route}) => {
             
             <View style = {styles.DetailView5}>
                 <View style = {{flexDirection : 'row', justifyContent :"center", alignItems : "center", marginVertical : 25}}><Text style = {{ fontSize : 17}}>Base Stats</Text></View>
-                <View style = {{ height : "100%", width : "100%", display : "flex", alignItems : "center"}}>
+                <View style = {{  display : "flex", alignItems : "center"}}>
                     <BarChart
                         data={{
                             labels: ["HP", "ATK", "DEF", "SATK", "SDEF", "SPD"],
@@ -205,6 +172,30 @@ const DetailsScreen : React.FC<Props> = ({navigation, route}) => {
                         withVerticalLabels = {true}
                         withHorizontalLabels = {true}
                         fromZero = {true}
+                    />
+                    <ProgressChart
+                        style={{marginVertical : 10}}
+                        data={
+                            { 
+                                labels: ["HP", "ATK", "DEF", "SATK", "SDEF", "SPD"],
+                                data :  basicDetails?.progressStats
+                              }
+                        }
+                        width= {Dimensions.get('window').width - 60}
+                        height={200}
+                        strokeWidth={8}
+                        radius={35}
+                        chartConfig={
+                            {
+                                backgroundGradientFrom: "white",
+                                backgroundGradientTo: "white",
+                                color: (opacity = 1) => `rgba(128, 128, 128, ${opacity})`,
+                                strokeWidth: 3, 
+                                barPercentage: 0.7,
+                                
+                              }
+                        }
+                        hideLegend={false}
                     />
                 </View>
             </View>

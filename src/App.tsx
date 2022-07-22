@@ -19,8 +19,8 @@ import DetailsScreen from './screens/afterlogin/DetailsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {AppStackParams} from "./types"
-
-
+import store from "./redux/store";
+import { Provider } from "react-redux";
 
 let AppStack = createNativeStackNavigator<AppStackParams>();
 
@@ -28,6 +28,7 @@ const App: React.FC = () => {
 
 
   return (
+    <Provider store={store}>
     <NavigationContainer>
         <AppStack.Navigator initialRouteName='Open'>
             <AppStack.Screen  
@@ -68,7 +69,7 @@ const App: React.FC = () => {
               />
         </AppStack.Navigator>
     </NavigationContainer>
-    
+    </Provider>
 
   );
 };

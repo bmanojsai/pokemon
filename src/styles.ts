@@ -108,16 +108,23 @@ const styles = StyleSheet.create({
     },
 
     HomeHeader : {
-        height : 70,
-        backgroundColor : "white",
-        shadowColor : "black",
-        shadowRadius : 20,
-        elevation : 30,
         display : "flex",
         flexDirection : "row",
         justifyContent : "space-between",
         alignItems : "center",
-        paddingHorizontal : 10
+        paddingHorizontal : 10,
+        width : "100%",
+        marginVertical : 5
+    },
+    HomeHeaderHead : {
+        display :'flex',
+        minHeight : 50,
+        backgroundColor : "white",
+        shadowColor : "black",
+        shadowRadius : 20,
+        elevation : 30,
+        justifyContent : 'center',
+        alignItems : "center"
     },
 
     //detailsScreen css
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
     },
     DetailView5 : {
         // flex : 4,
-        height : 300,
+        //height : 300,
         //backgroundColor : 'red'
     },
     DV2mini : {

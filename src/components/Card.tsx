@@ -26,7 +26,7 @@ const Card :React.FC<Props> = ({item, index, navigation})=> {
 
   
   return (
-    <Pressable style = {[styles.CardView, {borderColor : colors[randomIndex]}]} onPress = { ():void  => navigation.navigate("Details", {name : item.name, color : colors[randomIndex], index : index+1 , imgUrl : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(index+1)).slice(-3)}.png`})}>
+    <Pressable style = {[styles.CardView, {borderColor : colors[randomIndex]}]} onPress = { ():void  => navigation.navigate("Details", {name : item.name.charAt(0).toUpperCase() + item.name.slice(1), color : colors[randomIndex], index : index+1 , imgUrl : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(index+1)).slice(-3)}.png`})}>
       <View style = {styles.CardImgView}>
         <Image 
           source={{
@@ -36,7 +36,7 @@ const Card :React.FC<Props> = ({item, index, navigation})=> {
         />
       </View>
       <View style = {[styles.CardImgName, {backgroundColor : colors[randomIndex]}]}>
-        <Text style = {{color : "white", fontSize : 17}} >{item.name}</Text>
+        <Text style = {{color : "white", fontSize : 17}} >{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</Text>
       </View>
      
     </Pressable>
