@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { BasicDetails } from "../screens/afterlogin/DetailsScreen";
 
-export type PokemonList = { name : string, url : string }[]
+export type PokemonList = { name : string, url : string, index : number }[]
 
 const initialState:{
     pokemonList : PokemonList,
@@ -31,7 +31,10 @@ let pokemonSlice = createSlice({
         },
 
         getListOfPokemons : (state, action) => {
-            state.pokemonList = action.payload
+            let newData = action.payload.map((item : { name : string, url : string },index : number) => { return {...item , index : index+1 }} );
+            //console.log(newData)
+            state.pokemonList = newData
+
         },
 
         getPokemonDetails : (state, action) => {

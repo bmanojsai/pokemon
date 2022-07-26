@@ -1,6 +1,6 @@
 
 import React , {useEffect, useState}from 'react'
-import {View, Text, Pressable, FlatList, Image, ToastAndroid} from 'react-native';
+import {View, Text, Pressable, FlatList, Image, ToastAndroid, TextInput} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParams } from '../../types';
@@ -13,8 +13,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getListOfPokemons } from '../../redux/pokemonSlice';
 import { RootState } from '../../redux/store';
 import { fetchListOfPokemons } from '../../redux/pokemonSlice';
-import SearchBar from '../../components/SearchBar';
-
+//import SearchBar from '../../components/SearchBar';
+import { PokemonList } from '../../redux/pokemonSlice';
 
 export type Props = {
     navigation : NativeStackNavigationProp<AppStackParams, "Home">
@@ -24,13 +24,41 @@ export type Props = {
 
 const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
     const[searchShow, setSearchShow] = useState<boolean>(false);
-    const data = useSelector((state : RootState) => state.pokemon.pokemonList);
+    const fullData = useSelector((state : RootState) => state.pokemon.pokemonList);
+    const [data, setData] = useState<PokemonList>();
+    const [searchText, setSearchText] = useState<string>("");
+    const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>()
     const dispatch = useDispatch();
 
     //fetch the 20 pokemon details
     useEffect(() => {
         dispatch( fetchListOfPokemons() );
     } , []);
+
+    useEffect(() => {
+        //console.log("changed!!!")
+        if(debounceTimeout){
+            clearTimeout(debounceTimeout)
+            //setDebounceTimeout(null);
+        }
+        if(searchText == ""){
+            //console.log("This is called")
+            setData(fullData);
+        }else{
+            //console.log(searchText);
+            let newTimer = setTimeout(debounceSearch,1000);
+            setDebounceTimeout(newTimer)
+            
+        }
+    },[fullData, searchText]);
+
+
+    function debounceSearch(){
+        let newSearchData = fullData.filter((obj) => obj.name.includes(searchText));
+        console.log("888888888888888888",newSearchData, "***********************",fullData);
+        setData(newSearchData);
+    }
+
 
     //on logout, remove the loggedUser from asyncStorage.
     async function LogoutTheUser(): Promise<void> {
@@ -55,7 +83,12 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
                 </View>
 
                 {
-                    searchShow && <SearchBar />  
+                    searchShow && (<TextInput 
+                        style = {{height : 40, width : "90%", borderRadius : 6, backgroundColor : "#DADADA", marginVertical :5, paddingHorizontal : 5}} 
+                        placeholder = "search"
+                        onChangeText={setSearchText}  
+                        value = {searchText}
+                    />)
                 }
                 
                
@@ -65,6 +98,10 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
             <FlatList 
                 data={data}
                 numColumns = {2}
+                removeClippedSubviews = {true}
+                maxToRenderPerBatch = {10}
+                
+                ListEmptyComponent = {() => <Text style = {{ textAlign : "center", marginTop : 200, fontSize : 20}}>Oops! No Pokemons Found 😔</Text>}
                 renderItem = { ({item, index}) => <Card item = {item} index = {index} navigation= {navigation} /> }
                 style = {{marginHorizontal : 20}}
                 showsVerticalScrollIndicator = {false}

@@ -7,7 +7,8 @@ import { AppStackParams } from '../types';
 type Props = {
     item : {
       name : string,
-      url : string
+      url : string,
+      index : number
     },
     index : number,
     navigation : NativeStackNavigationProp<AppStackParams, "Home">
@@ -30,7 +31,7 @@ const Card :React.FC<Props> = ({item, index, navigation})=> {
       <View style = {styles.CardImgView}>
         <Image 
           source={{
-            uri : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(index+1)).slice(-3)}.png`
+            uri : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(item.index)).slice(-3)}.png`
           }}
           style = {{width : "90%", height : "90%"}}
         />
