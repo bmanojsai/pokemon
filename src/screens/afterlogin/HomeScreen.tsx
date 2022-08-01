@@ -19,11 +19,12 @@ import { PokemonList } from '../../redux/pokemonSlice';
 export type Props = {
     navigation : NativeStackNavigationProp<AppStackParams, "Home">
     route : RouteProp<AppStackParams, "Home">
+    testing ?: boolean
 }
 
 
-const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
-    const[searchShow, setSearchShow] = useState<boolean>(false);
+const HomeScreen : React.FC<Props> =  ({navigation,route,testing}) => {
+    const[searchShow, setSearchShow] = useState<boolean>( testing || false);
     const fullData = useSelector((state : RootState) => state.pokemon.pokemonList);
     const [data, setData] = useState<PokemonList>();
     const [searchText, setSearchText] = useState<string>("");
@@ -55,7 +56,7 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
 
     function debounceSearch(){
         let newSearchData = fullData.filter((obj) => obj.name.includes(searchText));
-        console.log("888888888888888888",newSearchData, "***********************",fullData);
+        //console.log("888888888888888888",newSearchData, "***********************",fullData);
         setData(newSearchData);
     }
 
@@ -63,7 +64,9 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
     //on logout, remove the loggedUser from asyncStorage.
     async function LogoutTheUser(): Promise<void> {
         try{
-            await AsyncStorage.removeItem("@loggedUser");
+            if(!testing){
+                await AsyncStorage.removeItem("@loggedUser");
+            }
             navigation.navigate("Open");
         }catch(error){
             ToastAndroid.showWithGravity("Error while Logging Out!", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
@@ -75,15 +78,16 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
         <View>
             <View style = {styles.HomeHeaderHead} >
                 <View style = {styles.HomeHeader}>
-                    <Text style = {{color : "black", fontSize : 35}}>Pokemon</Text>
+                    <Text style = {[{color : "black", fontSize : 35}, styles.fontBold]}>Pokemon</Text>
                     <View style = {{display : "flex", flexDirection: "row", justifyContent : "center"}} >
                         <Icon name='search' size={35} color = "black" onPress={() => setSearchShow(!searchShow)} />
-                        <Icon style= {{marginLeft :15}} name='logout' size={35} color = "black" onPress={LogoutTheUser} />
+                        <Icon style= {{marginLeft :15}} name='logout' size={35} color = "black" testID='log-out' onPress={LogoutTheUser} />
                     </View>
                 </View>
 
                 {
                     searchShow && (<TextInput 
+                        testID='search-box'
                         style = {{height : 40, width : "90%", borderRadius : 6, backgroundColor : "#DADADA", marginVertical :5, paddingHorizontal : 5}} 
                         placeholder = "search"
                         onChangeText={setSearchText}  
@@ -96,6 +100,7 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
             </View>
             
             <FlatList 
+                testID='list-of-items'
                 data={data}
                 numColumns = {2}
                 removeClippedSubviews = {true}
@@ -107,9 +112,9 @@ const HomeScreen : React.FC<Props> =  ({navigation,route}) => {
                 showsVerticalScrollIndicator = {false}
                 ListHeaderComponent = { () : any  => {
                     return (
-                        <View style = {{marginVertical : 15}}>
-                            <Text style = {{fontSize : 25}}>Hello {route.params.name}!</Text>
-                            <Text>Explore our vast collection of Pokemons</Text>
+                        <View testID='flatlist-header' style = {{marginVertical : 15}}>
+                            <Text style = {[ {fontSize : 25, color : "dimgrey"}, styles.fontBold ]}>Hello { testing ? "testing" : route.params.name}!</Text>
+                            <Text style = {[ {color : "dimgrey"} , styles.fontRegular]}>Explore our vast collection of Pokemons</Text>
                         </View>
                     );
                 }}

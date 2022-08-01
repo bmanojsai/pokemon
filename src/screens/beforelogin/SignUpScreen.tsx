@@ -93,6 +93,7 @@ const SignUpScreen : React.FC<Props> = ({navigation}) => {
                         <Icon1 name = "user" size={23} color = "black"/>
                     </View>
                     <TextInput 
+                        testID="input-field"
                         style = {styles.TextInputField} 
                         placeholder = "Name"  
                         onChangeText={setInputName} 
@@ -105,6 +106,7 @@ const SignUpScreen : React.FC<Props> = ({navigation}) => {
                         <Icon name = "email" size={23} color = "black"/>
                     </View>
                     <TextInput 
+                        testID="input-field"
                         style = {styles.TextInputField} 
                         placeholder = "email" 
                         onChangeText={setInputEmail} 
@@ -116,6 +118,7 @@ const SignUpScreen : React.FC<Props> = ({navigation}) => {
                         <Icon2 name = "key" size={20} color = "black"/>
                     </View>
                     <TextInput 
+                        testID="input-field"
                         style = {styles.TextInputField} 
                         placeholder = "password" 
                         onChangeText={setInputPassword} 
@@ -128,15 +131,15 @@ const SignUpScreen : React.FC<Props> = ({navigation}) => {
                 
                 
 
-                <Pressable onPress = {registerUser} style = { ({pressed}) => [ styles.OpenSignupButton , {backgroundColor : pressed ? "#519e1e" : "#3b810c", marginTop : 60}, styles.ButtonShadow ] } >
+                <Pressable testID="signup-button" onPress = {registerUser} style = { ({pressed}) => [ styles.OpenSignupButton , {backgroundColor : pressed ? "#519e1e" : "#3b810c", marginTop : 60}, styles.ButtonShadow ] } >
                     <View ><Text style = {[ styles.OpenText , { color : "white"  } ]}>Sign Up</Text></View>
                 </Pressable>
                 
-                <View style = {styles.DontLink}><Text>Already have an account? </Text><Pressable onPress={():void => navigation.navigate("Login")}><Text style = {{color : "blue"}}>login here</Text></Pressable></View>
+                <View style = {styles.DontLink}><Text>Already have an account? </Text><Pressable testID="login-here" onPress={():void => navigation.navigate("Login")}><Text style = {{color : "blue"}}>login here</Text></Pressable></View>
 
             </View>
 
-            <View style = {styles.BackButton}><Icon name="arrow-back" color={"black"} size = {30} onPress ={ () => navigation.goBack()} /></View>
+            <View style = {styles.BackButton}><Icon testID="go-back" name="arrow-back" color={"black"} size = {30} onPress ={ () => navigation.goBack()} /></View>
 
         </View>
     );

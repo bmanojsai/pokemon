@@ -92,7 +92,7 @@ const DetailsScreen : React.FC<Props> = ({navigation, route}) => {
                 <View style = {styles.DetailsHeader}>
                     <Icon name='arrow-back' color = "white" size={35} onPress = {() => navigation.goBack()} />
                     <View>
-                        <Text style= {{fontSize : 30 , color : "white", marginHorizontal : 10}} >{route.params.name}</Text>
+                        <Text style= {[{fontSize : 30 , color : "white", marginHorizontal : 10}, styles.fontBold]} >{route.params.name}</Text>
                     </View>
                 </View>
             </View>

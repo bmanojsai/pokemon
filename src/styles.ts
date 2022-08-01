@@ -76,10 +76,8 @@ const styles = StyleSheet.create({
     //styles for Card.tsx
 
     CardView : {
-        width : "40%",
+        width : "100%",
         height : 180,
-        marginHorizontal : "5%",
-        marginVertical : "2%",
         borderWidth : 1,
         borderColor : "green",
         borderRadius : 10,
@@ -248,8 +246,17 @@ const styles = StyleSheet.create({
         display : "flex",
         flexDirection : "row",
 
-    }
+    },
 
+    fontLight : {
+        fontFamily : "Nunito-Light"
+    },
+    fontRegular : {
+        fontFamily : "Nunito-Regular"
+    },
+    fontBold : {
+        fontFamily : "Nunito-Bold"
+    },
 
 
 });

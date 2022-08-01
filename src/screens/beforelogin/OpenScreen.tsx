@@ -57,11 +57,11 @@ const OpenScreen : React.FC<Props> = ({navigation}) => {
             <View style = {styles.OpenBottomView}>
                 <View>
                     <Pressable onPress={() => navigation.navigate("SignUp" )} >
-                        <View style = {[ styles.OpenSignupButton , {backgroundColor : "#3b810c"}, styles.ButtonShadow ]}><Text style = {[ styles.OpenText , { color : "white"  } ]}>Sign Up</Text></View>
+                        <View style = {[ styles.OpenSignupButton ,  {backgroundColor : "#3b810c"}, styles.ButtonShadow ]}><Text style = {[ styles.OpenText ,styles.fontRegular, { color : "white"  } ]}>Sign Up</Text></View>
                     </Pressable>
 
                     <Pressable onPress={() => navigation.navigate("Login")} >
-                        <View style = {styles.OpenSignupButton}><Text style = {[ styles.OpenText , { color : "#3b810c" } ]}>Login</Text></View>
+                        <View style = {styles.OpenSignupButton}><Text style = {[ styles.OpenText ,styles.fontRegular, { color : "#3b810c" } ]}>Login</Text></View>
                     </Pressable>
                 </View>
                 

@@ -10,7 +10,7 @@
 // shorturl.at/dPZ69
 
 
-import React, { type PropsWithChildren } from 'react';
+import React, { type PropsWithChildren, useEffect } from 'react';
 import LoginScreen from './screens/beforelogin/LoginScreen';
 import OpenScreen from './screens/beforelogin/OpenScreen';
 import SignUpScreen from './screens/beforelogin/SignUpScreen';
@@ -21,10 +21,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {AppStackParams} from "./types"
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import SplashScreen from 'react-native-splash-screen';
+
+
 
 let AppStack = createNativeStackNavigator<AppStackParams>();
 
 const App: React.FC = () => {
+
+  useEffect(() => {
+    SplashScreen.hide();
+  },[]);
 
 
   return (

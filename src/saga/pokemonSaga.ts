@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, takeEvery } from 'redux-saga/effects'
+import { takeLatest, call, put, all } from 'redux-saga/effects'
 import axios from 'axios';
 import {getListOfPokemons, getPokemonDetails} from "../redux/pokemonSlice";
 import {Ability, Moves, BasicDetails} from "../screens/afterlogin/DetailsScreen";
@@ -52,6 +52,6 @@ function* fetchPokemonDetailsSaga(action : any){
 
 export default function* rootSaga(){
     yield all([
-        pokemonWatcher(),
+        pokemonWatcher()
     ])
 } 

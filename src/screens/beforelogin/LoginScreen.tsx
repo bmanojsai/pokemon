@@ -60,6 +60,7 @@ const LoginScreen : React.FC<Props> = ({navigation}) => {
                         <Icon name = "email" size={23} color = "black"/>
                     </View>
                     <TextInput 
+                        testID="input-field"
                         style = {styles.TextInputField} 
                         placeholder = "email" 
                         onChangeText={setInputEmail}    
@@ -71,6 +72,7 @@ const LoginScreen : React.FC<Props> = ({navigation}) => {
                         <Icon2 name = "key" size={21} color = "black"/>
                     </View>
                     <TextInput 
+                        testID="input-field"
                         style = {styles.TextInputField} 
                         placeholder = "password" 
                         onChangeText={setInputPassword}  
@@ -83,15 +85,15 @@ const LoginScreen : React.FC<Props> = ({navigation}) => {
 
                 
 
-                <Pressable onPress = {authenticateUser} style = {[ styles.OpenSignupButton , {backgroundColor : "#3b810c", marginTop : 60}, styles.ButtonShadow ]}>
+                <Pressable testID="login-button" onPress = {authenticateUser} style = {[ styles.OpenSignupButton , {backgroundColor : "#3b810c", marginTop : 60}, styles.ButtonShadow ]}>
                     <Text style = {[ styles.OpenText , { color : "white"  } ]}>Log In</Text>
                 </Pressable>
 
-                <View style = {styles.DontLink}><Text>Don't have an account? </Text><Pressable onPress={():void => navigation.navigate("SignUp")}><Text style = {{color : "blue"}}>create here</Text></Pressable></View>
+                <View style = {styles.DontLink}><Text>Don't have an account? </Text><Pressable testID="create-link" onPress={():void => navigation.navigate("SignUp")}><Text style = {{color : "blue"}}>create here</Text></Pressable></View>
                 
             </View>
 
-            <View style = {styles.BackButton}><Icon name="arrow-back" color={"black"} size = {30} onPress ={ () => navigation.goBack()} /></View>
+            <View style = {styles.BackButton}><Icon name="arrow-back" color={"black"} size = {30} testID = "go-back" onPress ={ () => navigation.goBack()} /></View>
         
         </View>
     );
