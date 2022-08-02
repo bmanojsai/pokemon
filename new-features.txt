@@ -1,0 +1,24 @@
+Here are the bugs and features that need to be implemented in current app.
+
+Bugs : 
+
+- email should be stored in lowercase && and while login, email should be checked after converting to lowercase.
+
+- When we search something in homescreen. at that point if we click back button from mobile, it logouts and redirects to Open Page.
+
+- For some of the pokemons, progress chart is showing wrong.
+    reason/solution : for progress chart range is 0-1. here we are dividing stats by 100 to get data in required range.
+    but some pokemons have data over 100. eg 109 -> 109/100 = 1.09. which is >1 . so convert according(divide stats with max value.)
+
+features:
+
+- when search button is clicked, it will open search box and we can serch pokemons.
+    at this time, the search icon should dissaper and a close mark should be there beside search box.
+    On clicking close button of search box. it should return to normal look and all 20 pokemons should be shown.
+
+- on reaching the last pokemon, another list of 20 pokemons should be fetched and shown.
+    solution : on fetching the first 20 pokemons, you will also get a api link for next 20. use that.
+
+- Sign in with google feature.
+
+- add strict validations for email and password.

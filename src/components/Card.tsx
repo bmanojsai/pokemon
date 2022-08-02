@@ -28,7 +28,7 @@ const Card :React.FC<Props> = ({item, index, navigation})=> {
 
   
   return (
-    <Pressable testID='pokemon-card'  style = {{width : "42%", height : 180, marginHorizontal : "4%", marginVertical : "3%"}} onPress = { ():void  => navigation.navigate("Details", {name : item.name.charAt(0).toUpperCase() + item.name.slice(1), color : colors[randomIndex], index : index+1 , imgUrl : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(index+1)).slice(-3)}.png`})}>
+    <Pressable testID='pokemon-card'  style = {{width : "42%", height : 180, marginHorizontal : "4%", marginVertical : "3%"}} onPress = { ():void  => navigation.navigate("Details", {name : item.name.charAt(0).toUpperCase() + item.name.slice(1), color : colors[randomIndex], index : index , imgUrl : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(index)).slice(-3)}.png`})}>
       
       <Animated.View 
         style = {[styles.CardView, {borderColor : colors[randomIndex]}]}

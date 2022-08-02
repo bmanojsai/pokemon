@@ -55,7 +55,7 @@ const HomeScreen : React.FC<Props> =  ({navigation,route,testing}) => {
 
 
     function debounceSearch(){
-        let newSearchData = fullData.filter((obj) => obj.name.includes(searchText));
+        let newSearchData = fullData.filter((obj) => obj.name.includes(searchText.toLowerCase()));
         //console.log("888888888888888888",newSearchData, "***********************",fullData);
         setData(newSearchData);
     }
@@ -107,7 +107,7 @@ const HomeScreen : React.FC<Props> =  ({navigation,route,testing}) => {
                 maxToRenderPerBatch = {10}
                 
                 ListEmptyComponent = {() => <Text style = {{ textAlign : "center", marginTop : 200, fontSize : 20}}>Oops! No Pokemons Found 😔</Text>}
-                renderItem = { ({item, index}) => <Card item = {item} index = {index} navigation= {navigation} /> }
+                renderItem = { ({item, index}) => <Card item = {item} index = {item.index} navigation= {navigation} /> }
                 style = {{marginHorizontal : 20}}
                 showsVerticalScrollIndicator = {false}
                 ListHeaderComponent = { () : any  => {
