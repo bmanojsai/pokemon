@@ -1,0 +1,58 @@
+login page -> home page -> details page
+
+
+login page :
+
+pokemon heading
+1 email field 
+1 password field
+submit button
+
+functionality :
+
+- store dummy 1 set of login details in code(state variable)
+- when user entered data is correct -> navigate to home page else alert an error(do nothing)
+
+
+home page : 
+
+pokemon header
+a list of 20 pokemon cards.(ScrollView or FlatList)
+a logout button.
+
+functionality :  
+- fetch the list of 20 pokemons
+- on clicking any card -> navigate to Details page (send the id of pokemons).
+- on clicking logout -> logout the user -> navigate to login page
+
+
+Details page : 
+
+pokemon name as header
+a pokemon picture
+data representation in dictory form
+a progress chart.
+
+functionality :
+- fetch complete pokemon details.
+
+
+
+
+
+navigation packages
+
+  npm install @react-navigation/native
+
+  npm install react-native-screens react-native-safe-area-context
+
+  npm install @react-navigation/native-stack
+
+
+redux saga packages
+
+  
+npm install redux react-redux @types/react-redux 
+npm install @reduxjs/toolkit 
+npm install redux-saga
+  
