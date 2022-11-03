@@ -32,7 +32,6 @@ let pokemonSlice = createSlice({
 
         getListOfPokemons : (state, action) => {
             let newData = action.payload.map((item : { name : string, url : string },index : number) => { return {...item , index : index+1 }} );
-            //console.log(newData)
             state.pokemonList = newData
 
         },

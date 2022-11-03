@@ -15,8 +15,6 @@ function* fetchPokemonList(){
         let response : { [k : string] : any } = yield call( axios.get ,"https://pokeapi.co/api/v2/pokemon/" );
         let dataJSON : {name : string, url :string}[] = yield response.data.results;
         yield put(getListOfPokemons(dataJSON));
-        //console.log("fetchListOfPokemons is called!");
-        //console.log(dataJSON);
     }catch(error){
         console.log("Error while fetching list of pokemons",error)
     }
