@@ -89,7 +89,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
             testID="input-field"
             style={styles.TextInputField}
             placeholder="email"
-            onChangeText={setInputEmail}
+            onChangeText={(email) => setInputEmail(email.toLowerCase())}
           />
         </View>
 
