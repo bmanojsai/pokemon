@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,11 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [inputPassword, setInputPassword] = useState<string>('');
   const [passwordMask, setPasswordMask] = useState<boolean>(true);
+
+  const username_ref = useRef();
+  const email_ref = useRef();
+  const password_ref = useRef();
+
 
   //This function validates the given inputs and returns true or false
   let validateUser = (): boolean => {
@@ -133,6 +138,9 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             style={styles.TextInputField}
             placeholder="Name"
             onChangeText={setInputName}
+            ref = {username_ref}
+            autoFocus = {true}
+            onSubmitEditing = {() => email_ref.current.focus()}
           />
         </View>
 
@@ -145,6 +153,8 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             style={styles.TextInputField}
             placeholder="email"
             onChangeText={(email) => setInputEmail(email.toLowerCase())}
+            ref = {email_ref}
+            onSubmitEditing = {() => password_ref.current.focus()}
           />
         </View>
 
@@ -158,6 +168,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
             placeholder="password"
             onChangeText={setInputPassword}
             secureTextEntry={passwordMask}
+            ref = {password_ref}
           />
           <View>
             <Icon1
