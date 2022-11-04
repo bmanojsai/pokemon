@@ -88,12 +88,14 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-            <Icon
-              name="search"
-              size={35}
-              color="black"
-              onPress={() => setSearchShow(!searchShow)}
-            />
+            {!searchShow && (
+              <Icon
+                name="search"
+                size={35}
+                color="black"
+                onPress={() => setSearchShow(!searchShow)}
+              />
+            )}
             <Icon
               style={{marginLeft: 15}}
               name="logout"
@@ -106,20 +108,39 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
         </View>
 
         {searchShow && (
-          <TextInput
-            testID="search-box"
+          <View
             style={{
-              height: 40,
-              width: '90%',
-              borderRadius: 6,
-              backgroundColor: '#DADADA',
-              marginVertical: 5,
-              paddingHorizontal: 5,
-            }}
-            placeholder="search"
-            onChangeText={setSearchText}
-            value={searchText}
-          />
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              paddingHorizontal: 6,
+            }}>
+            <TextInput
+              testID="search-box"
+              style={{
+                height: 40,
+                flex: 10,
+                borderRadius: 6,
+                backgroundColor: '#DADADA',
+                marginVertical: 5,
+                paddingHorizontal: 5,
+              }}
+              placeholder="search"
+              onChangeText={setSearchText}
+              value={searchText}
+            />
+            <Icon
+              style={{marginLeft: 5, flex: 1}}
+              name="close"
+              size={27}
+              color="black"
+              onPress={() => {
+                setSearchText('');
+                setSearchShow(!searchShow);
+              }}
+            />
+          </View>
         )}
       </View>
 
