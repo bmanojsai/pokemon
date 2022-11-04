@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useRef} from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,10 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   const [inputEmail, setInputEmail] = useState<string>('');
   const [inputPassword, setInputPassword] = useState<string>('');
   const [passwordMask, setPasswordMask] = useState<boolean>(true);
+
+  const email_ref = useRef();
+  const password_ref = useRef();
+
 
   //get particular user by input email id. check if password is correct or not.
   //if correct -> navigate to Home Page
@@ -90,6 +94,9 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
             style={styles.TextInputField}
             placeholder="email"
             onChangeText={(email) => setInputEmail(email.toLowerCase())}
+            autoFocus = {true}
+            ref = {email_ref}
+            onSubmitEditing = {() => password_ref.current.focus()}
           />
         </View>
 
@@ -103,6 +110,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
             placeholder="password"
             onChangeText={setInputPassword}
             secureTextEntry={passwordMask}
+            ref = {password_ref}
           />
           <View>
             <Icon1
