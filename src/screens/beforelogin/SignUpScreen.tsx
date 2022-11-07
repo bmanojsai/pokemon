@@ -29,6 +29,9 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
   const email_ref = useRef();
   const password_ref = useRef();
 
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //password -> minimum 8 chars + atleact 1 number + atleast 1 char
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 
   //This function validates the given inputs and returns true or false
   let validateUser = (): boolean => {
@@ -39,16 +42,16 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
         ToastAndroid.BOTTOM,
       );
       return false;
-    } else if (!inputEmail.includes('@gmail.com')) {
+    } else if (!emailRegex.test(inputEmail)) {
       ToastAndroid.showWithGravity(
         'Invalid Email',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
       );
       return false;
-    } else if (inputPassword.length <= 5) {
+    } else if (!passwordRegex.test(inputPassword)) {
       ToastAndroid.showWithGravity(
-        'Password should be grater than 5 characters',
+        'Password should be minimum 8 characters, has at least one letter and one number:',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
       );
