@@ -17,7 +17,7 @@ import styles from '../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../redux/store';
-import {fetchListOfPokemons} from '../../redux/pokemonSlice';
+import {fetchListOfPokemons,fetchNextListOfPokemons} from '../../redux/pokemonSlice';
 import {PokemonList} from '../../redux/pokemonSlice';
 
 export type Props = {
@@ -29,6 +29,7 @@ export type Props = {
 const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
   const [searchShow, setSearchShow] = useState<boolean>(testing || false);
   const fullData = useSelector((state: RootState) => state.pokemon.pokemonList);
+  const nextApi = useSelector((state:RootState) => state.pokemon.nextPokemonApi);
   const [data, setData] = useState<PokemonList>();
   const [searchText, setSearchText] = useState<string>('');
   const [debounceTimeout, setDebounceTimeout] =
@@ -150,6 +151,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
         numColumns={2}
         removeClippedSubviews={true}
         maxToRenderPerBatch={10}
+        onEndReached = {() =>   dispatch(fetchNextListOfPokemons(nextApi))}
         ListEmptyComponent={() => (
           <Text style={{textAlign: 'center', marginTop: 200, fontSize: 20}}>
             Oops! No Pokemons Found 😔
