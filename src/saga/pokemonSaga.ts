@@ -1,17 +1,22 @@
-import {takeLatest, call, put, all} from 'redux-saga/effects';
+import {takeLatest, call, put, all, takeEvery} from 'redux-saga/effects';
 import axios from 'axios';
-import {getListOfPokemons, getPokemonDetails} from '../redux/pokemonSlice';
+import {getListOfPokemons, getPokemonDetails,getNextPokemonApi} from '../redux/pokemonSlice';
 import {
   Ability,
   Moves,
   BasicDetails,
 } from '../screens/afterlogin/DetailsScreen';
-import {max} from 'react-native-reanimated';
 import reactotron from 'reactotron-react-native';
 
 function* pokemonWatcher() {
   yield takeLatest('pokemon/fetchListOfPokemons', fetchPokemonList);
   yield takeLatest('pokemon/fetchPokemonDetails', fetchPokemonDetailsSaga);
+  yield takeEvery('pokemon/fetchNextListOfPokemons',fextNextPokemonList);
+}
+
+function findIndexfromAPi(api : string) {
+  let splitarray = api.split('/');
+  return parseInt(splitarray[6]);
 }
 
 function* fetchPokemonList() {
@@ -21,7 +26,10 @@ function* fetchPokemonList() {
       'https://pokeapi.co/api/v2/pokemon/',
     );
     let dataJSON: {name: string; url: string}[] = yield response.data.results;
-    yield put(getListOfPokemons(dataJSON));
+    let newDataJSON :  {name: string; url: string; index : number}[] = yield dataJSON.map( (item : { name : string, url : string }) => { return {...item , index : findIndexfromAPi(item.url) }}  ) 
+    yield put(getListOfPokemons(newDataJSON));
+    let nextPokemonApi : string = yield response.data.next;
+    yield put(getNextPokemonApi(nextPokemonApi));
   } catch (error) {
     console.log('Error while fetching list of pokemons', error);
   }
@@ -58,6 +66,22 @@ function* fetchPokemonDetailsSaga(action: any) {
     yield put(getPokemonDetails(fullDetails));
   } catch (error) {
     console.log(error);
+  }
+}
+
+function* fextNextPokemonList(action:any){
+  try {
+    let response: {[k: string]: any} = yield call(
+      axios.get,
+      action.payload,
+    );
+    let dataJSON: {name: string; url: string}[] = yield response.data.results;
+    let newDataJSON :  {name: string; url: string; index : number}[] = yield dataJSON.map( (item : { name : string, url : string }) => { return {...item , index : findIndexfromAPi(item.url) }}  ) 
+    yield put(getListOfPokemons(newDataJSON));
+    let nextPokemonApi : string = yield response.data.next;
+    yield put(getNextPokemonApi(nextPokemonApi));
+  } catch (error) {
+    console.log('Error while fetching list of pokemons', error);
   }
 }
 
