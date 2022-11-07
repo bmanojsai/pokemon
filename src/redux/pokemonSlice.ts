@@ -7,7 +7,8 @@ export type PokemonList = { name : string, url : string, index : number }[]
 const initialState:{
     pokemonList : PokemonList,
     pokemonDetails : BasicDetails,
-    nextPokemonApi : String
+    nextPokemonApi : String,
+    nextLoading: boolean
 } =  {
     pokemonList : [],
     pokemonDetails : {
@@ -19,7 +20,8 @@ const initialState:{
         stats : [0,0,0,0,0,0],
         progressStats : [0,0,0,0,0,0]
     },
-    nextPokemonApi : ""
+    nextPokemonApi : "",
+    nextLoading : false
 }
 
 let pokemonSlice = createSlice({
@@ -33,11 +35,11 @@ let pokemonSlice = createSlice({
 
         },
         fetchNextListOfPokemons : (state,action) => {
-
+            state.nextLoading = true;
         },
         getListOfPokemons : (state, action) => {
             state.pokemonList.push(...action.payload);
-            //state.pokemonList = newData
+            state.nextLoading = false;
         },
         getPokemonDetails : (state, action) => {
             state.pokemonDetails = action.payload;

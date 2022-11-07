@@ -7,6 +7,7 @@ import {
   Image,
   ToastAndroid,
   TextInput,
+  ActivityIndicator
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -30,6 +31,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
   const [searchShow, setSearchShow] = useState<boolean>(testing || false);
   const fullData = useSelector((state: RootState) => state.pokemon.pokemonList);
   const nextApi = useSelector((state:RootState) => state.pokemon.nextPokemonApi);
+  const nextLoading = useSelector((state:RootState) => state.pokemon.nextLoading);
   const [data, setData] = useState<PokemonList>();
   const [searchText, setSearchText] = useState<string>('');
   const [debounceTimeout, setDebounceTimeout] =
@@ -130,6 +132,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               placeholder="search"
               onChangeText={setSearchText}
               value={searchText}
+              autoFocus = {true}
             />
             <Icon
               style={{marginLeft: 5, flex: 1}}
@@ -174,7 +177,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
             </View>
           );
         }}
-        ListFooterComponent={(): any => <View style={{height: 100}}></View>}
+        ListFooterComponent={(): any => <View style={{height: 100}}>{nextLoading ? <ActivityIndicator size={"large"}/> : <></>}</View>}
       />
     </View>
   );
