@@ -2,24 +2,20 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
 
-
+    //below are open screen css
     flexFullScreen : {
         flex : 1,
-        backgroundColor : "#f6f6f6"
     },
     OpenTopEmptyView : {
         flex : 1.5,
-        // backgroundColor : "yellow"
     },
     OpenImgView : {
         flex : 5,
-        //backgroundColor : "blue",
         justifyContent : "center",
         alignItems : "center"
     },
     OpenBottomView : {
         flex : 3,
-        // backgroundColor : "green",
         flexDirection : "row",
         justifyContent : "center",
         alignItems : 'center',
@@ -60,15 +56,12 @@ const styles = StyleSheet.create({
     SignUpTopView : {
         
         height : 200,
-        //backgroundColor  : "blue",
         padding : 40,
         paddingBottom : 0
     },
     SignUpBottomView : {
         flex : 1,
-        // backgroundColor  : "yellow",
         alignItems : "center",
-        //justifyContent : "flex-start"
         paddingTop : 40
     },
 
@@ -88,12 +81,11 @@ const styles = StyleSheet.create({
     },
     CardImgView : {
         flex : 3,
-        //backgroundColor : 'yellow',
         borderTopRightRadius : 10,
         borderTopLeftRadius : 10,
         justifyContent : "center",
         alignItems : "center",
-        backgroundColor : "white"
+        
     },
     CardImgName : {
         flex : 1,
@@ -117,8 +109,7 @@ const styles = StyleSheet.create({
     HomeHeaderHead : {
         display :'flex',
         minHeight : 50,
-        backgroundColor : "white",
-        shadowColor : "black",
+        shadowColor : "white",
         shadowRadius : 20,
         elevation : 30,
         justifyContent : 'center',
@@ -134,7 +125,6 @@ const styles = StyleSheet.create({
         paddingHorizontal : 5,
         padding : 5,
         height : 50,
-        //backgroundColor : "yellow"
     },
     DetailsTopView : {
         height : 300
@@ -147,7 +137,6 @@ const styles = StyleSheet.create({
     },
     DetailsBottomView : {
         flex : 2,
-        backgroundColor : "white",
         margin : 5,
        borderRadius : 5
     },
@@ -209,7 +198,6 @@ const styles = StyleSheet.create({
     InputField : {
         width : "80%",
         height : 50,
-        backgroundColor : "smokeWhite",
         opacity : 0.7,
         borderRadius : 10,
         marginVertical : 20,
@@ -230,7 +218,6 @@ const styles = StyleSheet.create({
     BackButton : {
         width : 40,
         height : 40,
-        backgroundColor : "white",
         borderRadius : 20,
         display : "flex",
         justifyContent : "center",

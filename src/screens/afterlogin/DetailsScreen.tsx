@@ -1,4 +1,4 @@
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, ThemeProvider} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
@@ -16,7 +16,7 @@ import {BarChart, ProgressChart} from 'react-native-chart-kit';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchPokemonDetails, getPokemonDetails} from '../../redux/pokemonSlice';
 import {RootState} from '../../redux/store';
-
+import { useTheme } from 'react-native-paper';
 type TextProps = {
   ability: string;
 };
@@ -85,6 +85,7 @@ const DetailsScreen: React.FC<Props> = ({navigation, route}) => {
     (state: RootState) => state.pokemon.pokemonDetails,
   );
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   useEffect((): void => {
     dispatch(fetchPokemonDetails(route.params.index));
@@ -121,7 +122,7 @@ const DetailsScreen: React.FC<Props> = ({navigation, route}) => {
           />
         </View>
       </View>
-      <ScrollView style={styles.DetailsBottomView}>
+      <ScrollView style={[styles.DetailsBottomView,{backgroundColor : theme.backgroundColor.first}]}>
         <View style={styles.DetailView1}>
           <Text style={{color: route.params.color, fontSize: 20}}>About</Text>
         </View>
@@ -194,8 +195,8 @@ const DetailsScreen: React.FC<Props> = ({navigation, route}) => {
               yAxisLabel=""
               yAxisSuffix=""
               chartConfig={{
-                backgroundGradientFrom: 'white',
-                backgroundGradientTo: 'white',
+                backgroundGradientFrom: theme.backgroundColor.first,
+                backgroundGradientTo: theme.backgroundColor.first,
                 color: () => route.params.color,
                 strokeWidth: 3,
                 barPercentage: 0.7,
@@ -218,8 +219,8 @@ const DetailsScreen: React.FC<Props> = ({navigation, route}) => {
               strokeWidth={8}
               radius={35}
               chartConfig={{
-                backgroundGradientFrom: 'white',
-                backgroundGradientTo: 'white',
+                backgroundGradientFrom: theme.backgroundColor.first,
+                backgroundGradientTo: theme.backgroundColor.first,
                 color: (opacity = 1) => `rgba(128, 128, 128, ${opacity})`,
                 strokeWidth: 3,
                 barPercentage: 0.7,

@@ -20,6 +20,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../redux/store';
 import {fetchListOfPokemons,fetchNextListOfPokemons} from '../../redux/pokemonSlice';
 import {PokemonList} from '../../redux/pokemonSlice';
+import { useTheme } from 'react-native-paper';
+import reactotron from 'reactotron-react-native';
 
 export type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'Home'>;
@@ -37,6 +39,8 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
   const [debounceTimeout, setDebounceTimeout] =
     useState<NodeJS.Timeout | null>();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  reactotron.log(theme);
 
   //fetch the 20 pokemon details
   useEffect(() => {
@@ -79,10 +83,10 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
   }
 
   return (
-    <View>
-      <View style={styles.HomeHeaderHead}>
+    <View style = {{flex:1}}>
+      <View style={[styles.HomeHeaderHead,{backgroundColor : theme.backgroundColor.first,}]}>
         <View style={styles.HomeHeader}>
-          <Text style={[{color: 'black', fontSize: 35}, styles.fontBold]}>
+          <Text style={[{color: theme.textColor.first, fontSize: 35}, styles.fontBold]}>
             Pokemon
           </Text>
           <View
@@ -95,7 +99,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               <Icon
                 name="search"
                 size={35}
-                color="black"
+                color={theme.textColor.first}
                 onPress={() => setSearchShow(!searchShow)}
               />
             )}
@@ -103,7 +107,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               style={{marginLeft: 15}}
               name="logout"
               size={35}
-              color="black"
+              color={theme.textColor.first}
               testID="log-out"
               onPress={LogoutTheUser}
             />
@@ -125,7 +129,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
                 height: 40,
                 flex: 10,
                 borderRadius: 6,
-                backgroundColor: '#DADADA',
+                backgroundColor: theme.backgroundColor.second,
                 marginVertical: 5,
                 paddingHorizontal: 5,
               }}
@@ -138,7 +142,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               style={{marginLeft: 5, flex: 1}}
               name="close"
               size={27}
-              color="black"
+              color={theme.textColor.first}
               onPress={() => {
                 setSearchText('');
                 setSearchShow(!searchShow);
@@ -163,15 +167,15 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
         renderItem={({item, index}) => (
           <Card item={item} index={item.index} navigation={navigation} />
         )}
-        style={{marginHorizontal: 20}}
+        style={{paddingHorizontal: 20,backgroundColor:theme.backgroundColor.second}}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={(): any => {
           return (
             <View testID="flatlist-header" style={{marginVertical: 15}}>
-              <Text style={[{fontSize: 25, color: 'dimgrey'}, styles.fontBold]}>
+              <Text style={[{fontSize: 25, color: theme.textColor.second}, styles.fontBold]}>
                 Hello {testing ? 'testing' : route.params.name}!
               </Text>
-              <Text style={[{color: 'dimgrey'}, styles.fontRegular]}>
+              <Text style={[{color: theme.textColor.second}, styles.fontRegular]}>
                 Explore our vast collection of Pokemons
               </Text>
             </View>

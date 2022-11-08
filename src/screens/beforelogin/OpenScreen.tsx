@@ -4,12 +4,16 @@ import styles from '../../styles';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AppStackParams, UserDetails} from '../../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useTheme } from 'react-native-paper';
 export interface Props {
   navigation: NativeStackNavigationProp<AppStackParams, 'Open'>;
 }
 
 const OpenScreen: React.FC<Props> = ({navigation}) => {
+  const theme = useTheme();
+
+
+
   //This useEffect() will check if any user already logged in or not.
   // if logged in -> redirects to Home Page with user data
   //else -> do nothing(stay in Open page itself)
@@ -42,19 +46,17 @@ const OpenScreen: React.FC<Props> = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.flexFullScreen}>
+    <View style={[styles.flexFullScreen, {backgroundColor : theme.backgroundColor.first}]}>
       <View style={styles.OpenTopEmptyView}></View>
 
       <View style={styles.OpenImgView}>
         <Image
-          source={require('../../assets/pokemon-logo.png')}
+          source={require('../../assets/pokemon-logo-png.png')}
           style={{width: 300, height: 150}}
         />
         <Image
-          source={{
-            uri: 'https://www.seekpng.com/png/detail/237-2378177_pokemon-kanto-starters-and-pikachu.png',
-          }}
-          style={styles.Img}
+          source={require('../../assets/pokemon-png1.png')}
+          style={{width: "100%", height : "50%", marginVertical:50}}
         />
       </View>
 

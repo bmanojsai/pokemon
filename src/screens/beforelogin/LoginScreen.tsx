@@ -14,6 +14,7 @@ import {AppStackParams, UserDetails} from '../../types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/FontAwesome5';
+import { useTheme } from 'react-native-paper';
 type Props = {
   navigation: NativeStackNavigationProp<AppStackParams, 'Login'>;
 };
@@ -25,7 +26,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   const email_ref = useRef();
   const password_ref = useRef();
-
+  const theme = useTheme();
 
   //get particular user by input email id. check if password is correct or not.
   //if correct -> navigate to Home Page
@@ -74,20 +75,18 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.flexFullScreen}>
+    <View style={[styles.flexFullScreen,{backgroundColor : theme.backgroundColor.first}]}>
       <View style={styles.SignUpTopView}>
         <Image
-          source={{
-            uri: 'https://1000logos.net/wp-content/uploads/2017/05/Pokemon-Logo-768x480.png',
-          }}
+          source={require('../../assets/pokemon-logo-png.png')}
           style={[styles.Img]}
         />
       </View>
 
       <View style={styles.SignUpBottomView}>
-        <View style={styles.InputField}>
+        <View style={[styles.InputField,{backgroundColor : theme.backgroundColor.second,}]}>
           <View>
-            <Icon name="email" size={23} color="black" />
+            <Icon name="email" size={23} color={theme.textColor.first} />
           </View>
           <TextInput
             testID="input-field"
@@ -100,9 +99,9 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
           />
         </View>
 
-        <View style={styles.InputField}>
+        <View style={[styles.InputField,{backgroundColor : theme.backgroundColor.second,}]}>
           <View>
-            <Icon2 name="key" size={21} color="black" />
+            <Icon2 name="key" size={21} color= {theme.textColor.first} />
           </View>
           <TextInput
             testID="input-field"
@@ -117,7 +116,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
               style={{marginLeft: 5}}
               name={passwordMask ? 'eye' : 'eye-slash'}
               size={23}
-              color="black"
+              color={theme.textColor.first}
               onPress={() => setPasswordMask(!passwordMask)}
             />
           </View>
@@ -144,10 +143,10 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
         </View>
       </View>
 
-      <View style={styles.BackButton}>
+      <View style={[styles.BackButton,{backgroundColor : theme.backgroundColor.second,}]}>
         <Icon
           name="arrow-back"
-          color={'black'}
+          color={theme.textColor.first}
           size={30}
           testID="go-back"
           onPress={() => navigation.goBack()}
