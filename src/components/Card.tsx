@@ -4,7 +4,7 @@ import {View, Text, Image, Pressable} from 'react-native';
 import styles from '../styles';
 import { AppStackParams } from '../types';
 import Animated, {BounceInDown, FadeInDown, FadeInUp, Layout, PinwheelIn} from "react-native-reanimated";
-
+import { useTheme } from 'react-native-paper';
 type Props = {
     item : {
       name : string,
@@ -18,7 +18,7 @@ type Props = {
 const Card :React.FC<Props> = ({item, index, navigation})=> {
   const [colors , setColors] = useState<string[]>(["orange","darkslategrey","darkmagenta", "blue","green","purple","cadetblue","crimson", "darkblue"])
   const [randomIndex, setRandomIndex] = useState<number>(0);
-  
+  const theme = useTheme();
   
   //here select one random color from the array
   useEffect(() => {
@@ -34,7 +34,7 @@ const Card :React.FC<Props> = ({item, index, navigation})=> {
         style = {[styles.CardView, {borderColor : colors[randomIndex]}]}
         entering = {BounceInDown.delay(20)}
       >
-        <View style = {styles.CardImgView}>
+        <View style = {[styles.CardImgView,{backgroundColor : theme.backgroundColor.first}]}>
           <Image 
             source={{
               uri : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${("000" + JSON.stringify(item.index)).slice(-3)}.png`

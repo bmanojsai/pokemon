@@ -22,12 +22,40 @@ import {AppStackParams} from "./types"
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import SplashScreen from 'react-native-splash-screen';
-
-
+import {useColorScheme} from 'react-native';
+import reactotron from 'reactotron-react-native';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 let AppStack = createNativeStackNavigator<AppStackParams>();
 
 const App: React.FC = () => {
+  const colorScheme =useColorScheme();
+
+  const lightTheme = {
+    ...DefaultTheme,
+    backgroundColor: {
+      first: "white",
+      second:"#DADADA",
+    },
+    textColor:{
+      first:"black",
+      second:"dimgrey",
+      third:"green"
+    }
+  };
+
+  const darkTheme = {
+    ...DefaultTheme,
+    backgroundColor: {
+      first: "#282828",
+      second:"#404040",
+    },
+    textColor:{
+      first:"white",
+      second:"smokeWhite",
+      third:"green"
+    }
+  }
 
   useEffect(() => {
     SplashScreen.hide();
@@ -36,7 +64,8 @@ const App: React.FC = () => {
 
   return (
     <Provider store={store}>
-    <NavigationContainer>
+    <PaperProvider theme = { colorScheme === 'light' ? lightTheme : darkTheme}>
+    <NavigationContainer >
         <AppStack.Navigator initialRouteName='Open'>
             <AppStack.Screen  
                 name='Open' 
@@ -76,6 +105,7 @@ const App: React.FC = () => {
               />
         </AppStack.Navigator>
     </NavigationContainer>
+    </PaperProvider>
     </Provider>
 
   );
