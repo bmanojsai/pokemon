@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { BasicDetails } from "../screens/afterlogin/DetailsScreen";
+import reactotron from 'reactotron-react-native';
 
 export type PokemonList = { name : string, url : string, index : number }[]
 
 const initialState:{
     pokemonList : PokemonList,
-    pokemonDetails : BasicDetails
+    pokemonDetails : BasicDetails,
+    nextPokemonApi : String,
+    nextLoading: boolean
 } =  {
     pokemonList : [],
     pokemonDetails : {
@@ -16,7 +19,9 @@ const initialState:{
         moves : ["loading", "loading"],
         stats : [0,0,0,0,0,0],
         progressStats : [0,0,0,0,0,0]
-    }
+    },
+    nextPokemonApi : "",
+    nextLoading : false
 }
 
 let pokemonSlice = createSlice({
@@ -29,19 +34,22 @@ let pokemonSlice = createSlice({
         fetchPokemonDetails : (state,action) => {
 
         },
-
-        getListOfPokemons : (state, action) => {
-            let newData = action.payload.map((item : { name : string, url : string },index : number) => { return {...item , index : index+1 }} );
-            state.pokemonList = newData
-
+        fetchNextListOfPokemons : (state,action) => {
+            state.nextLoading = true;
         },
-
+        getListOfPokemons : (state, action) => {
+            state.pokemonList.push(...action.payload);
+            state.nextLoading = false;
+        },
         getPokemonDetails : (state, action) => {
-            state.pokemonDetails = action.payload
+            state.pokemonDetails = action.payload;
+        },
+        getNextPokemonApi : (state,action) =>{
+            state.nextPokemonApi = action.payload;
         }
     }
 })
 
 
-export const { fetchListOfPokemons,fetchPokemonDetails, getListOfPokemons , getPokemonDetails } = pokemonSlice.actions;
+export const { fetchListOfPokemons,fetchPokemonDetails,fetchNextListOfPokemons, getListOfPokemons , getPokemonDetails,getNextPokemonApi } = pokemonSlice.actions;
 export default pokemonSlice.reducer;

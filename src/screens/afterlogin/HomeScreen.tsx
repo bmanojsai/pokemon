@@ -7,6 +7,7 @@ import {
   Image,
   ToastAndroid,
   TextInput,
+  ActivityIndicator
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -17,7 +18,7 @@ import styles from '../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../../redux/store';
-import {fetchListOfPokemons} from '../../redux/pokemonSlice';
+import {fetchListOfPokemons,fetchNextListOfPokemons} from '../../redux/pokemonSlice';
 import {PokemonList} from '../../redux/pokemonSlice';
 
 export type Props = {
@@ -29,6 +30,8 @@ export type Props = {
 const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
   const [searchShow, setSearchShow] = useState<boolean>(testing || false);
   const fullData = useSelector((state: RootState) => state.pokemon.pokemonList);
+  const nextApi = useSelector((state:RootState) => state.pokemon.nextPokemonApi);
+  const nextLoading = useSelector((state:RootState) => state.pokemon.nextLoading);
   const [data, setData] = useState<PokemonList>();
   const [searchText, setSearchText] = useState<string>('');
   const [debounceTimeout, setDebounceTimeout] =
@@ -129,6 +132,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
               placeholder="search"
               onChangeText={setSearchText}
               value={searchText}
+              autoFocus = {true}
             />
             <Icon
               style={{marginLeft: 5, flex: 1}}
@@ -150,6 +154,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
         numColumns={2}
         removeClippedSubviews={true}
         maxToRenderPerBatch={10}
+        onEndReached = {() =>   dispatch(fetchNextListOfPokemons(nextApi))}
         ListEmptyComponent={() => (
           <Text style={{textAlign: 'center', marginTop: 200, fontSize: 20}}>
             Oops! No Pokemons Found 😔
@@ -172,7 +177,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
             </View>
           );
         }}
-        ListFooterComponent={(): any => <View style={{height: 100}}></View>}
+        ListFooterComponent={(): any => <View style={{height: 100}}>{nextLoading ? <ActivityIndicator size={"large"}/> : <></>}</View>}
       />
     </View>
   );
