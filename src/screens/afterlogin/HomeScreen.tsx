@@ -158,7 +158,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
         numColumns={2}
         removeClippedSubviews={true}
         maxToRenderPerBatch={10}
-        onEndReached = {() =>   dispatch(fetchNextListOfPokemons(nextApi))}
+        onEndReached = {() => !searchShow && dispatch(fetchNextListOfPokemons(nextApi)) }
         ListEmptyComponent={() => (
           <Text style={{textAlign: 'center', marginTop: 200, fontSize: 20}}>
             Oops! No Pokemons Found 😔
@@ -181,7 +181,7 @@ const HomeScreen: React.FC<Props> = ({navigation, route, testing}) => {
             </View>
           );
         }}
-        ListFooterComponent={(): any => <View style={{height: 100}}>{nextLoading ? <ActivityIndicator size={"large"}/> : <></>}</View>}
+        ListFooterComponent={(): any => <View style={{height: 50}}>{nextLoading ? <ActivityIndicator size={"large"}/> : <></>}</View>}
       />
     </View>
   );
